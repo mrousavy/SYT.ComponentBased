@@ -1,7 +1,11 @@
 package BusinessObjects;
 
-public class Bahnhof {
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
+@Entity
+public class Bahnhof {
+	@Id
 	private Long ID;
 
 	private String name;
