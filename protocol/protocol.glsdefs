@@ -1,0 +1,60 @@
+\ifglsentryexists{ac-pojo}{}%
+{%
+\gls@defglossaryentry{ac-pojo}%
+{%
+name={POJO},%
+sort={POJO},%
+type={acronym},%
+first={Plain Old Java Object\glsspace (POJO)},%
+firstplural={Plain Old Java Object\acrpluralsuffix \glsspace (POJO\acrpluralsuffix )},%
+text={POJO},%
+plural={POJO\acrpluralsuffix },%
+description={Plain Old Java Object},%
+descriptionplural={Plain Old Java Object\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Plain Old Java Object},%
+longplural={Plain Old Java Objects},%
+short={POJO},%
+shortplural={POJOs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{ac-jpa}{}%
+{%
+\gls@defglossaryentry{ac-jpa}%
+{%
+name={JPA},%
+sort={JPA},%
+type={acronym},%
+first={Java Persistence API\glsspace (JPA)},%
+firstplural={Java Persistence API\acrpluralsuffix \glsspace (JPA\acrpluralsuffix )},%
+text={JPA},%
+plural={JPA\acrpluralsuffix },%
+description={Java Persistence API},%
+descriptionplural={Java Persistence API\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Java Persistence API},%
+longplural={Java Persistence APIs},%
+short={JPA},%
+shortplural={JPAs},%
+counter={page},%
+parent={},%
+%
+}%
+}%

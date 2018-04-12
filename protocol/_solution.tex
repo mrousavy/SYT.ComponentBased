@@ -1,0 +1,22 @@
+%!TEX root=../protocol.tex	% Optional
+
+\section{Lösung}
+
+\subsection{Vorbereitung}
+
+Als Projekt wird eine \textbf{Java EE 8} Application mit folgenden Frameworks erstellt:
+\begin{itemize}
+    \item Web Application
+    \item Java Persistence API
+\end{itemize}
+\textbf{IntelliJ} lädt automatisch benötigte Libraries, andernfalls kann man dies manuell hinzufügen.
+
+\subsection{Entities}
+
+Entities sind einfache Klassen, bzw \gls{pojo}, welche durch die \gls{jpa} auf die Datenbank \textit{gemapped} werden.
+
+\
+
+Für die Westbahn, müssen alle Entities in dem UML (Siehe: Figur~\ref{fig:uml}) implementiert werden.
+
+Je \gls{entity} muss ein \gls{pojo} erstellt werden, welches eine von der \gls{jpa} verwaltete Schnittstelle zwischen dem Java Code und der Datenbank repräsentiert.
