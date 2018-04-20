@@ -18,6 +18,7 @@ public class Main {
         entitymanager.getTransaction().begin();
 
         Bahnhof bahnhof = new Bahnhof();
+        bahnhof.setName("Wien Spittelau");
 
         entitymanager.persist(bahnhof);
         entitymanager.getTransaction().commit();
