@@ -1,11 +1,16 @@
 package BusinessObjects;
 
-public abstract class Ticket {
+import javax.persistence.*;
 
+@Entity
+public abstract class Ticket {
+	@Id
+	@GeneratedValue
 	protected Long ID;
 
+	@ManyToOne
 	protected Strecke strecke;
 
+	@Transient
 	protected Zahlung zahlung;
-
 }

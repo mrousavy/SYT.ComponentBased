@@ -1,9 +1,12 @@
 package BusinessObjects;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 public class Zug {
-
+	@Id
+	@GeneratedValue
 	private Long ID;
 
 	private Date startZeit;
@@ -14,8 +17,9 @@ public class Zug {
 
 	private int rollStuhlPlaetze = 10;
 
+	@ManyToOne
 	private Bahnhof start;
-
+	
+	@ManyToOne
 	private Bahnhof ende;
-
 }

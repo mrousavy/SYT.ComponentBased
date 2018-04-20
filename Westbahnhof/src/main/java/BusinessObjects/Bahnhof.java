@@ -2,12 +2,15 @@ package BusinessObjects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class Bahnhof {
 	@Id
-	private Long ID;
+	@GeneratedValue
+	private long ID;
+
 	@Column(unique = true)
 	private String name;
 
@@ -18,5 +21,4 @@ public class Bahnhof {
 	private int absZeitEntfernung;
 
 	private boolean kopfBahnhof;
-
 }

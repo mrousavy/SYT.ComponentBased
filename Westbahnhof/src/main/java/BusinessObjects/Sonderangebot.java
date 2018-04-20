@@ -1,9 +1,16 @@
 package BusinessObjects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.Date;
+import java.util.List;
 
+@Entity
 public class Sonderangebot {
-
+	@Id
+	@GeneratedValue
 	private Long ID;
 
 	private int kontingent = 999;
@@ -14,6 +21,6 @@ public class Sonderangebot {
 
 	private float preisNachlass = 0.5f;
 
-	private Ticket tickets;
-
+	@OneToMany
+	private List<Ticket> tickets;
 }

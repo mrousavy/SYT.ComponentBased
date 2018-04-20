@@ -1,10 +1,10 @@
 package BusinessObjects;
 
 import javax.persistence.Column;
+import java.io.Serializable;
 
-public class Preisstaffelung {
-
-	private static Long serialVersionUID;
+public class Preisstaffelung implements Serializable {
+	private static long serialVersionUID = 10001L;
 
 	private float grossGepaeck = 1.02f;
 
@@ -16,14 +16,12 @@ public class Preisstaffelung {
 
 	private int zeitkarteJahr = 250;
 
-	private static Preisstaffelung instance;
-
+	private static Preisstaffelung instance = new Preisstaffelung();
 	public static Preisstaffelung getInstance() {
-		return null;
+		return instance;
 	}
 
 	private Preisstaffelung() {
 
 	}
-
 }

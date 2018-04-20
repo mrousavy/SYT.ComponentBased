@@ -1,9 +1,12 @@
 package BusinessObjects;
 
-import javax.persistence.Column;
+import javax.persistence.*;
+import java.util.List;
 
+@Entity
 public class Benutzer {
-
+	@Id
+    @GeneratedValue
 	private Long ID;
 
 	private String vorName;
@@ -16,10 +19,11 @@ public class Benutzer {
 
 	private String smsNummer;
 
-	private Long verbuchtePraemienMeilen;
+	private long verbuchtePraemienMeilen;
 
-	private Ticket tickets;
+	@OneToMany
+	private List<Ticket> tickets;
 
-	private Reservierung[] reservierungen;
-
+	@OneToMany
+	private List<Reservierung> reservierungen;
 }
