@@ -1,5 +1,7 @@
 package BusinessObjects;
 
+import javax.persistence.Column;
+
 public class Benutzer {
 
 	private Long ID;
@@ -7,7 +9,7 @@ public class Benutzer {
 	private String vorName;
 
 	private String nachName;
-
+	@Column(unique = true)
 	private String eMail;
 
 	private String passwort;

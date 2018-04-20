@@ -1,5 +1,6 @@
 package BusinessObjects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -7,7 +8,7 @@ import javax.persistence.Id;
 public class Bahnhof {
 	@Id
 	private Long ID;
-
+	@Column(unique = true)
 	private String name;
 
 	private int absPreisEntfernung;

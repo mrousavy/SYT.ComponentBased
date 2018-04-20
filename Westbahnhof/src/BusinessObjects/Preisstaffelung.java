@@ -1,5 +1,7 @@
 package BusinessObjects;
 
+import javax.persistence.Column;
+
 public class Preisstaffelung {
 
 	private static Long serialVersionUID;
