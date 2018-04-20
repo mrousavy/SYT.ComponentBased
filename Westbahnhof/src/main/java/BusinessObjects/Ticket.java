@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public abstract class Ticket {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long ID;
 
 	@ManyToOne

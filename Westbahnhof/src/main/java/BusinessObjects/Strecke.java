@@ -8,7 +8,7 @@ import javax.persistence.*;
 )
 public class Strecke {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ID;
 	@ManyToOne
 	private Bahnhof start;

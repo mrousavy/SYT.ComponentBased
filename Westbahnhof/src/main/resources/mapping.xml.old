@@ -9,7 +9,7 @@
     <description>XML Mapping file (ORM)</description>
 
     <entity class="BusinessObjects.Reservierung">
-        <table name="RESERVIERUNG"/>
+        <table name="Reservierung"/>
         <attributes>
             <id name="ID">
                 <generated-value strategy="TABLE"/>

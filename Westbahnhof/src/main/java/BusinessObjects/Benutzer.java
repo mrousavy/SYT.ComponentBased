@@ -6,7 +6,7 @@ import java.util.List;
 @Entity
 public class Benutzer {
 	@Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ID;
 
 	private String vorName;
