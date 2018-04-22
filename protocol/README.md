@@ -1,57 +1,67 @@
-# A Latex Protocol Template
+# A latex protocol template
 
+**Quickstart**
+```sh
+git clone git@github.com:tgm-hit/latex-protocol.git protocol
+cd protocol
+./make
+```
+
+**Contents**
 - [Usage](#usage)
-	- [Make](#make)
-	- [PdfLatex](#pdflatex)
+	- [LaTeX](#latex)
 	- [TexStudio](#texstudio)
+	- [ShareLatex](#sharelatex)
 - [Options](#options)
 - [Variables](#variables)
 
 ## Usage
-### Make
-If the command is available simply run
-```sh
-make
-```
-and all `.tex` files which do not start with `glo`, `lst` or `_` will be compiled for both glossaries and bibliography.
+With Python 3 and LaTeX installed you can easily compile your project using the `make` script which simplifies the compilation progress, handles multiple source files and removes unnecessary files.
+For most use-cases you only have to run `./make` which compiles the `main.tex` file using `pdflatex` while looking for bibliography and glossary entries.
 
-### PdfLatex
-When `make` is not available you can also run
+### Latex
+If (for some reason) you do not want to depend on the `make` script you can also use `pdflatex`, `makeglossaries` and `bibtex` from the shell.
 ```sh
-pdflatex -interaction=nonstopmode -shell-escape protocol	# Initial compilation
-makeglossaries protocol 					# Compile glossaries
-pdflatex -interaction=nonstopmode -shell-escape protocol	# Progressive compilation for glossaries
-bibtex protocol 						# Compile bibliography
-pdflatex -interaction=nonstopmode -shell-escape protocol	# Progressive compilation for bibtex
-pdflatex -interaction=nonstopmode -shell-escape protocol	# Progressive compilation for bibtex
+pdflatex -shell-escape main	# Initial compilation
+makeglossaries main 		# Compile glossaries
+pdflatex -shell-escape main	# Progressive compilation for glossaries
+bibtex main 			# Compile bibliography
+pdflatex -shell-escape main	# Progressive compilation for bibtex
+pdflatex -shell-escape main	# Progressive compilation for bibtex
 ```
-to fully compile the `protocol.tex` file provided by default.
 
 ### TexStudio
-If using TexStudio you might want to add a custom user command in `Options` &rarr; `Configure TexStudio` &rarr; `Build` &rarr; `User Commands`. Add the following line to completely compile a LaTeX file with glossaries, bibliography and also minted.
+In TexStudio a custom command can be added under `Options` &rarr; `Configure TexStudio` &rarr; `Build` &rarr; `User Commands`. The following line completely compiles a LaTeX file with glossaries, bibliography and minted.
 ```sh
 pdflatex -shell-escape -interaction=nonstopmode % | txs:///makeglossaries | pdflatex -shell-escape -interaction=nonstopmode % | txs:///bibtex | pdflatex -shell-escape -interaction=nonstopmode % | pdflatex -shell-escape -interaction=nonstopmode % | txs:///view-pdf-internal --embedded
 ```
 
-Of course you can also add `make` as a user command but you might want to set the variable `LOG=true` so TexStudio can find your logfile after cleanup.
+Of course you can also add the `make` script as a user command but you might want to set `-lm` so TexStudio can find your log files and minted cache after cleanup.
 ```sh
-make LOG=true | txs:///view-pdf-internal --embedded
+python make -lm | txs:///view-pdf-internal --embedded
 ```
+
+### ShareLaTex
+[ShareLaTex](https://www.sharelatex.com/project) is a popular online latex editor and is also fully supported by this template. Just download the archived repository or latest release and upload as a new project.
+
+![ShareLaTex usage](https://media.giphy.com/media/DNwRWMqKcwnE92liHn/giphy.gif)
 
 ## Options
 Option | Result
 ------ | ------
+`en` | Set main document language to english
 `landscape` | Change the page format to landscape orientation
 `minted` | Add and configure minted package
 `natbib` | Change bibtex backend to natbib
-`nobib` | Disable bibliography
-`nofonts` | Change font to default
-`noglo` | Disable acronyms and glossary
-`nologos` | Disable logos on titlepage
-`notitle` | Disable titlepage
-`notoc` | Disable table of contents
-`notable` | Disable table on titlepage
-`parskip` | Skip line instead of indent after blank line
+`nobib` | No bibliography
+`nofonts` | No additional fonts
+`noglo` | No acronyms and glossary
+`nologos` | No logos on titlepage
+`notable` | No table on titlepage
+`notitle` | No titlepage
+`notoc` | No table of contents
+`parskip` | Skip a line instead of indenting after blank line
+`sans` | Load sans-serif fonts
 
 ## Variables
 Variables can be set as commands like
