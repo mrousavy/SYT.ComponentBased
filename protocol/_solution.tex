@@ -10,15 +10,55 @@ Als Projekt wird eine \textbf{Java EE 8} Application mit folgenden Frameworks er
     \item \textbf{Java Persistence API} - Annotation Declarations für Entities und das ORM System
     \item \textbf{Hibernate} - Die Implementierung von \gls{jpa}
     \item \textbf{\gls{jdbc}} - Java Datenbank Interface
+    \item \textbf{log4j} - Java Logger API
 \end{itemize}
 \textbf{IntelliJ} lädt automatisch benötigte Libraries, andernfalls kann man dies manuell hinzufügen.
 
-Für die Libraries habe ich \textbf{Maven} verwendet, das \textbf{Maven} \gls{pom} sieht dementsprechend folgendermaßen aus:
+Maven wird bei dem Menüpunkt "Project Dependencies" ausgewählt.
 
-\begin{code}[firstnumber=last]{java}
+Mittels Maven können nun alle Libraries hinzugefügt werden:
+
+\begin{itemize}
+    \item MySQL:
+        \begin{code}{xml}
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>6.0.6</version>
+        </dependency>
+        \end{code}
+    \item Hibernate (inklusive \gls{jpa}):
+        \begin{code}{xml}
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.2.16.Final</version>
+        </dependency>
+        \end{code}
+    \item log4j:
+        \begin{code}{xml}
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+        \end{code}
+    \item XML Bind:
+        \begin{code}{xml}
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        \end{code}
+\end{itemize}
+
+Das \textbf{Maven} \gls{pom} sieht dementsprechend folgendermaßen aus:
+
+\begin{code}{xml}
+<!--pom.xml-->
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" >
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>mrousavy</groupId>
@@ -60,4 +100,134 @@ Für die Westbahn, müssen alle Entities in dem UML (Siehe: Figur~\ref{fig:uml})
 
 Je \gls{entity} muss ein \gls{pojo} erstellt werden, welches eine von der \gls{jpa} verwaltete Schnittstelle zwischen dem Java Code und der Datenbank repräsentiert.
 
+Die Entities habe ich aus dem Astah UML Diagramm exportiert: \textbf{Tool -> Java -> Export Java}
 
+Astah hat nun alle Klassen aus dem UML Diagramm exportiert, welche aber noch alle \gls{jpa} \textbf{Annotations} erhalten werden.
+
+\
+
+\textbf{Annotations} sind Metadata informationen, welche zur Kompilierung (bei Ausnahmefällen: Auch zur Laufzeit) Klassen, Attributen oder Methoden hinzugefügt werden können.
+
+Die wichtigste \textbf{Annotations} ist:
+\begin{code}{java}
+@Entity
+public class Bahnhof {}
+\end{code}
+
+welche auf jedem \textit{gemappten} \gls{pojo} zu finden ist.
+
+\
+
+Außerdem sollte jede Entity eine eindeutige Identifikation haben, oft durch eine Ganzzahl mit dem namen \texttt{ID}.
+
+Beispielsweise könnte so die ID von einem Bahnhof ausschauen:
+
+\begin{code}{java}
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private long ID;
+\end{code}
+
+wobei die \textbf{Annotation} \texttt{@GeneratedValue} der \gls{jpa} mitteilt, es handelt sich um ein generiertes Attribut welches im Idealfall nicht vom Benutzer modifiziert wird. Beispielsweise wäre dies eine automatisch mitzählende Identifikation.
+
+\
+
+Alle anderen Attribute bzw. \textbf{Properties} können zusätzliche \textbf{Annotations} erhalten, sind jedoch optional. Beispielsweise kann ein name auch einzigartig sein:
+
+\begin{code}{java}
+@Column(unique = true)
+private String name;
+\end{code}
+
+\
+
+Mit etwas \gls{ide} Zauberei können auch getter und setter Methoden generiert werden, womit das \gls{pojo} - und nun auch die \gls{entity} - nun so ausschaut:
+
+\begin{code}{java}
+package BusinessObjects;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+public class Bahnhof {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long ID;
+
+	@Column(unique = true)
+	private String name;
+
+	private int absPreisEntfernung;
+
+	private int absKmEntfernung;
+
+	private int absZeitEntfernung;
+
+	private boolean kopfBahnhof;
+
+    public long getID() {
+        return ID;
+    }
+
+    public void setID(long ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAbsPreisEntfernung() {
+        return absPreisEntfernung;
+    }
+
+    public void setAbsPreisEntfernung(int absPreisEntfernung) {
+        this.absPreisEntfernung = absPreisEntfernung;
+    }
+
+    public int getAbsKmEntfernung() {
+        return absKmEntfernung;
+    }
+
+    public void setAbsKmEntfernung(int absKmEntfernung) {
+        this.absKmEntfernung = absKmEntfernung;
+    }
+
+    public int getAbsZeitEntfernung() {
+        return absZeitEntfernung;
+    }
+
+    public void setAbsZeitEntfernung(int absZeitEntfernung) {
+        this.absZeitEntfernung = absZeitEntfernung;
+    }
+
+    public boolean isKopfBahnhof() {
+        return kopfBahnhof;
+    }
+
+    public void setKopfBahnhof(boolean kopfBahnhof) {
+        this.kopfBahnhof = kopfBahnhof;
+    }
+}
+\end{code}
+
+\
+
+Dementsprechend müssen nun alle \gls{pojo}s zu \textbf{Entities} gemacht werden.
+
+\
+
+Ein Sonderfall war die \gls{entity} Strecke (\texttt{Strecke.java}), da diese \textit{unique constraints} benötigte.
+
+Dazu gefunden habe ich die Dokumentation in den Java Docs: \gls{uniqueConstraints}, welche zu folgendem Code für die \gls{entity} \textbf{Strecke} führte:
+
+\begin{code}{java}
+@Table(
+        uniqueConstraints = @UniqueConstraint(columnNames = {"start_id", "ende_id"})
+)
+\end{code}
