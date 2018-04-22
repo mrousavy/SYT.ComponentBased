@@ -6,17 +6,58 @@
 
 Als Projekt wird eine \textbf{Java EE 8} Application mit folgenden Frameworks erstellt:
 \begin{itemize}
-    \item Web Application
-    \item Java Persistence API
+    \item \textbf{Maven} - Package/Library Management System
+    \item \textbf{Java Persistence API} - Annotation Declarations für Entities und das ORM System
+    \item \textbf{Hibernate} - Die Implementierung von \gls{jpa}
+    \item \textbf{\gls{jdbc}} - Java Datenbank Interface
 \end{itemize}
 \textbf{IntelliJ} lädt automatisch benötigte Libraries, andernfalls kann man dies manuell hinzufügen.
 
+Für die Libraries habe ich \textbf{Maven} verwendet, das \textbf{Maven} \gls{pom} sieht dementsprechend folgendermaßen aus:
+
+\begin{code}[firstnumber=last]{java}
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>mrousavy</groupId>
+    <artifactId>Westbahnhof</artifactId>
+    <version>1.0</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>6.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.2.16.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+    </dependencies>
+</project>
+\end{code}
+
 \subsection{Entities}
 
-Entities sind einfache Klassen, bzw \gls{pojo}, welche durch die \gls{jpa} auf die Datenbank \textit{gemapped} werden.
+Entities sind einfache Klassen, bzw. \gls{pojo}, welche durch die \gls{jpa} auf die Datenbank \textit{gemapped} werden.
 
 \
 
 Für die Westbahn, müssen alle Entities in dem UML (Siehe: Figur~\ref{fig:uml}) implementiert werden.
 
 Je \gls{entity} muss ein \gls{pojo} erstellt werden, welches eine von der \gls{jpa} verwaltete Schnittstelle zwischen dem Java Code und der Datenbank repräsentiert.
+
+
