@@ -5,6 +5,10 @@ import javax.validation.constraints.Email;
 import java.util.List;
 
 @Entity
+@NamedQuery(
+        name = "Benutzer.getAllWithMonatskarte",
+        query = "SELECT Benutzer FROM Benutzer.tickets t INNER JOIN Zeitkarte ON Zeitkarte.ID=t.ID WHERE Zeitkarte.typ=1"
+)
 public class Benutzer {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

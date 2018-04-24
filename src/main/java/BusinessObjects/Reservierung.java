@@ -4,6 +4,10 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@NamedQuery(
+        name="Reservierung.getReservierungenForUser",
+        query = "SELECT r FROM Benutzer.reservierungen r INNER JOIN Reservierung ON r.ID=Reservierung.ID WHERE Benutzer.eMail = :email"
+)
 public class Reservierung {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

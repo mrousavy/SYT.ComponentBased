@@ -340,6 +340,16 @@ Die Spalten heißen \texttt{start\_id}/\texttt{end\_id}, da es sich nicht um Sca
 
 Es wird also kein tatsächliches Bahnhof Objekt auf der Datenbank gespeichert (da dies nicht möglich ist), sondern nur der Foreign Key zu einem Eintrag in dem Bahnhof Table. (Siehe: Mapping \cite{wiki:mapping})
 
+\
+
+Außerdem soll die \texttt{Reservierung} Klasse nicht mittels der \texttt{@Entity} Annotation, sonder mittels \texttt{XML Mapping} \textit{gemapped} werden.
+
+Dazu wird die Ressource \texttt{mapping.xml} erstellt:
+
+\begin{code}{xml}
+
+\end{code}
+
 \clearpage
 \subsection{EntityManager}
 
@@ -393,6 +403,33 @@ Bahnhof bahnhof = entityManager.find(Bahnhof.class, 0L);
 entityManager.remove(bahnhof);
 entityManager.flush();
 entityManager.getTransaction().commit();
+\end{code}
+
+\clearpage
+\subsection{Named Queries}
+
+\textbf{Finde alle Reservierungen für einen bestimmten Benutzer, der durch die eMail-Adresse definiert wird.}
+
+\begin{code}{java}
+@NamedQuery(
+    name="Reservierung.getReservierungenForUser",
+    query = "SELECT r FROM Benutzer.reservierungen r INNER JOIN Reservierung ON r.ID=Reservierung.ID WHERE Benutzer.eMail = :email"
+)
+\end{code}
+
+\textbf{Liste alle Benutzer auf, die eine Monatskarte besitzen.}
+
+\begin{code}{java}
+@NamedQuery(
+    name = "Benutzer.getAllWithMonatskarte",
+    query = "SELECT Benutzer FROM Benutzer.tickets t INNER JOIN Zeitkarte ON Zeitkarte.ID=t.ID WHERE Zeitkarte.typ=1"
+)
+\end{code}
+
+\textbf{Liste alle Tickets für eine bestimmte Strecke aus (durch Anfangs- und Endbahnhof definiert), wo keine Reservierungen durchgeführt wurden.}
+
+\begin{code}{java}
+// ...
 \end{code}
 
 \clearpage
