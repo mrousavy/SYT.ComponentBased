@@ -3,14 +3,7 @@ package BusinessObjects;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@NamedQuery(
-        name="Reservierung.getReservierungenForUser",
-        query = "SELECT r FROM Benutzer.reservierungen r INNER JOIN Reservierung ON r.ID=Reservierung.ID WHERE Benutzer.eMail = :email"
-)
 public class Reservierung {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ID;
 
 	private Date datum;
@@ -21,16 +14,12 @@ public class Reservierung {
 
 	private StatusInfo status;
 
-	@OneToOne
 	private Zug zug;
 
-    @OneToOne
 	private Strecke strecke;
 
-    @OneToOne
 	private Benutzer benutzer;
 
-    @Transient
 	private Zahlung zahlung;
 
     public Long getID() {
