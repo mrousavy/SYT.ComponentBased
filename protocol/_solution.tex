@@ -90,6 +90,7 @@ Das \textbf{Maven} \gls{pom} sieht dementsprechend folgendermaßen aus:
 </project>
 \end{code}
 
+\clearpage
 \subsection{Datenbank}
 
 Als Datenbank habe ich mich für eine MySQL 5 Datenbank entschieden, welche in einem Docker \cite{wiki:docker} Container laufen wird.
@@ -146,6 +147,7 @@ docker start mysql
 
 werden. In meinem Fall ist die IP Addresse des Containers \texttt{172.17.0.2}.
 
+\clearpage
 \subsection{JPA Konfiguration}
 
 Die \gls{jpa} (bzw. Hibernate) muss korrekt konfiguriert werden. Unter anderem muss die SQL Verbindung und der Typ festgelegt werden.
@@ -189,7 +191,7 @@ Die vollständige \texttt{persistence.xml} Datei wird folgendermaßen definiert:
 </persistence>
 \end{code}
 
-
+\clearpage
 \subsection{Entities}
 
 Entities sind einfache Klassen, bzw. \gls{pojo}, welche durch die \gls{jpa} auf die Datenbank \textit{gemapped} \cite{wiki:mapping} werden.
@@ -338,6 +340,7 @@ Die Spalten heißen \texttt{start\_id}/\texttt{end\_id}, da es sich nicht um Sca
 
 Es wird also kein tatsächliches Bahnhof Objekt auf der Datenbank gespeichert (da dies nicht möglich ist), sondern nur der Foreign Key zu einem Eintrag in dem Bahnhof Table. (Siehe: Mapping \cite{wiki:mapping})
 
+\clearpage
 \subsection{EntityManager}
 
 \subsubsection{Erstellen}
