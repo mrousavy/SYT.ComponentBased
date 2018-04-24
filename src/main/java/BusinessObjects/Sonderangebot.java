@@ -1,6 +1,7 @@
 package BusinessObjects;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class Sonderangebot {
 
 	private int kontingent = 999;
 
+	@Future
 	private Date startZeit;
 
 	private int dauer = 12;
@@ -41,7 +43,7 @@ public class Sonderangebot {
         return startZeit;
     }
 
-    public void setStartZeit(Date startZeit) {
+    public void setStartZeit(@Future Date startZeit) {
         this.startZeit = startZeit;
     }
 

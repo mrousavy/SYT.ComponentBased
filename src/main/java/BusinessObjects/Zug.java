@@ -1,6 +1,7 @@
 package BusinessObjects;
 
 import javax.persistence.*;
+import javax.validation.constraints.AssertTrue;
 import java.util.Date;
 
 @Entity
@@ -22,6 +23,11 @@ public class Zug {
 
 	@ManyToOne
 	private Bahnhof ende;
+
+    @AssertTrue(message="Start und End Bahnhof können nicht die selben sein!")
+    public boolean validBahnhof() {
+        return !start.equals(ende);
+    }
 
     public Long getID() {
         return ID;

@@ -396,6 +396,64 @@ entityManager.getTransaction().commit();
 \end{code}
 
 \clearpage
+\subsection{Constraints}
+
+Es soll die \textbf{Bean Validation API} verwendet werden, um bestimmte Attribute einzugrenzen.
+
+Als Referenz habe ich den Bean Validation Cheat Sheet von owasp \cite{owasp:beanValidationCheatSheet} verwendet.
+
+\subsubsection{Unique}
+\textbf{Zug und Strecke können nicht denselben Start- und Endbahnhof besitzen.}
+
+Gelöst habe ich dies mittels der \texttt{@AssertTrue} Annotation:
+
+\begin{code}{java}
+@AssertTrue(message="Start und End Bahnhof können nicht die selben sein!")
+public boolean validBahnhof() {
+    return !start.equals(ende);
+}
+\end{code}
+
+\subsubsection{eMail}
+\textbf{Die eMail des Benutzers soll ein gängiges eMail-Pattern befolgen.}
+
+Gelöst habe ich dies mittels der \texttt{@Email} Annotation:
+
+\begin{code}{java}
+@Email
+private String eMail;
+
+public void seteMail(@Email String eMail) {
+    this.eMail = eMail;
+}
+\end{code}
+
+\subsubsection{Startzeit}
+\textbf{Die Startzeit eines Sonderangebotes kann nicht in der Vergangenheit liegen.}
+
+Gelöst habe ich dies mittels der \texttt{@Future} Annotation:
+
+\begin{code}{java}
+@Future
+private Date startZeit;
+
+public void setStartZeit(@Future Date startZeit) {
+    this.startZeit = startZeit;
+}
+\end{code}
+
+\subsubsection{Bahnhofname}
+\textbf{Der Name eines Bahnhofs darf nicht kürzer als zwei und nicht länger als 150 Zeichen sein. Sonderzeichen sind bis auf den Bindestrich zu unterbinden.}
+
+Gelöst habe ich dies mittels den \texttt{@Size} und \texttt{@Pattern} Annotations:
+\begin{code}{java}
+@Column(unique = true)
+@Size(min=2, max=150)
+@Pattern(regexp = "^[a-zA-Z0-9\\-]$")
+private String name;
+\end{code}
+
+\clearpage
 \subsection{Testen}
 
 \subsubsection{Logger}

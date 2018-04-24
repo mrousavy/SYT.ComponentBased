@@ -1,6 +1,7 @@
 package BusinessObjects;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.List;
 
 @Entity
@@ -12,7 +13,9 @@ public class Benutzer {
 	private String vorName;
 
 	private String nachName;
+
 	@Column(unique = true)
+    @Email
 	private String eMail;
 
 	private String passwort;
@@ -55,7 +58,7 @@ public class Benutzer {
         return eMail;
     }
 
-    public void seteMail(String eMail) {
+    public void seteMail(@Email String eMail) {
         this.eMail = eMail;
     }
 

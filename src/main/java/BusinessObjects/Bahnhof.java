@@ -1,6 +1,8 @@
 package BusinessObjects;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -10,6 +12,8 @@ public class Bahnhof {
 	private long ID;
 
 	@Column(unique = true)
+    @Size(min=2, max=150)
+    @Pattern(regexp = "^[a-zA-Z0-9\\-]$")
 	private String name;
 
 	private int absPreisEntfernung;
@@ -19,6 +23,12 @@ public class Bahnhof {
 	private int absZeitEntfernung;
 
 	private boolean kopfBahnhof;
+
+	@Override
+    public boolean equals(Object obj) {
+        Bahnhof other = (obj instanceof Bahnhof ? (Bahnhof) obj : null);
+        return other != null && other.ID == this.ID;
+    }
 
     public long getID() {
         return ID;
