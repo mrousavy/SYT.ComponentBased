@@ -90,6 +90,106 @@ Das \textbf{Maven} \gls{pom} sieht dementsprechend folgendermaßen aus:
 </project>
 \end{code}
 
+\subsection{Datenbank}
+
+Als Datenbank habe ich mich für eine MySQL 5 Datenbank entschieden, welche in einem Docker \cite{wiki:docker} Container laufen wird.
+
+Dazu habe ich mir eine Dockerfile \cite{docker:dockerfile} geschrieben, welche diesen angepassten MySQL Container zusammenbaut.
+
+Das vollständige Dockerfile schaut dementsprechend folgendermaßen aus:
+
+\begin{code}{Dockerfile}
+FROM mysql:latest
+
+ENV MYSQL_ROOT_PASSWORD=root
+
+ENV MYSQL_DATA_DIR=/var/lib/mysql \
+    MYSQL_RUN_DIR=/run/mysqld \
+    MYSQL_LOG_DIR=/var/log/mysql
+
+ADD ["db_dump.sql", "/tmp/dump.sql"]
+COPY ./db_dump.sql /docker-entrypoint-initdb.d/
+
+RUN /etc/init.d/mysql start && mysql -u root -p$\{MYSQL_ROOT_PASSWORD\} < /tmp/dump.sql
+
+EXPOSE 3306
+\end{code}
+
+Wobei das \texttt{db\_dump.sql} Create-Script nur die Datenbank erstellt:
+
+\begin{code}{sql}
+DROP DATABASE IF EXISTS westbahn;
+CREATE DATABASE westbahn;
+USE westbahn;
+\end{code}
+
+\
+
+Um den Container zu kompilieren verwende ich folgendes script:
+
+\begin{code}{sh}
+#!/bin/bash
+
+docker stop mysql
+docker rm mysql
+
+docker build -t mysqlimg .
+sleep 2
+docker run -d --name mysql -v /home/mrousavy/Dockerfiles/data:/var/lib/mysql mysqlimg
+\end{code}
+
+Und gestartet kann er mit
+
+\begin{code}{sh}
+docker start mysql
+\end{code}
+
+werden. In meinem Fall ist die IP Addresse des Containers \texttt{172.17.0.2}.
+
+\subsection{JPA Konfiguration}
+
+Die \gls{jpa} (bzw. Hibernate) muss korrekt konfiguriert werden. Unter anderem muss die SQL Verbindung und der Typ festgelegt werden.
+
+Die Konfigurations-Datei ist eine XML Datei, welche in den App-Resources gespeichert werden muss.
+
+In meinem Fall ist das der relative Pfad: \texttt{src/main/resources/META-INF/persistence.xml}.
+
+Der root tag dieser XML Datei ist ein \texttt{persistence} tag, in welchem die \texttt{persistence-unit} (mit dem \texttt{name} Attribut) definiert wird.
+
+Diese \texttt{persistence-unit} hat verschiedene \texttt{property} tags, welche bestimmte Attribute in der \gls{jpa} konfigurieren.
+
+\
+
+Die vollständige \texttt{persistence.xml} Datei wird folgendermaßen definiert:
+
+\begin{code}{xml}
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+                version="2.0" >
+
+    <persistence-unit name="westbahn" >
+        <description>Westbahn Persistence Configuration XML file</description>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <properties>
+            <!-- MySQL -->
+            <property name="hibernate.connection.url" value="jdbc:mysql://172.17.0.2:3306/westbahn" />
+            <property name="hibernate.connection.username" value="root" />
+            <property name="hibernate.connection.password" value="root" />
+            <property name="hibernate.connection.driver" value="com.mysql.jdbc.Driver" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>
+\end{code}
+
+
 \subsection{Entities}
 
 Entities sind einfache Klassen, bzw. \gls{pojo}, welche durch die \gls{jpa} auf die Datenbank \textit{gemapped} werden.
