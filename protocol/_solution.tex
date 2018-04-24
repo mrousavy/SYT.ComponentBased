@@ -14,7 +14,7 @@ Als Projekt wird eine \textbf{Java EE 8} Application mit folgenden Frameworks er
 \end{itemize}
 \textbf{IntelliJ} lädt automatisch benötigte Libraries, andernfalls kann man dies manuell hinzufügen.
 
-Maven wird bei dem Menüpunkt "Project Dependencies" ausgewählt.
+Maven wird bei dem Menüpunkt \textbf{Project Dependencies} ausgewählt.
 
 Mittels Maven können nun alle Libraries hinzugefügt werden:
 
@@ -200,15 +200,17 @@ Für die Westbahn, müssen alle Entities in dem UML (Siehe: Figur~\ref{fig:uml})
 
 Je \gls{entity} muss ein \gls{pojo} erstellt werden, welches eine von der \gls{jpa} verwaltete Schnittstelle zwischen dem Java Code und der Datenbank repräsentiert.
 
+\subsubsection{Astah}
+
 Die Entities habe ich aus dem Astah UML Diagramm exportiert: \textbf{Tool -> Java -> Export Java}
 
 Astah hat nun alle Klassen aus dem UML Diagramm exportiert, welche aber noch alle \gls{jpa} \textbf{Annotations} erhalten werden.
 
-\
+\subsubsection{Java Klassen}
 
 \textbf{Annotations} sind Metadata informationen, welche zur Kompilierung (bei Ausnahmefällen: Auch zur Laufzeit) Klassen, Attributen oder Methoden hinzugefügt werden können.
 
-Die wichtigste \textbf{Annotations} ist:
+Die wichtigste \textbf{Annotation} ist:
 \begin{code}{java}
 @Entity
 public class Bahnhof {}
@@ -335,3 +337,58 @@ Dazu gefunden habe ich die Dokumentation in den Java Docs: \gls{uniqueConstraint
 Die Spalten heißen \texttt{start\_id}/\texttt{end\_id}, da es sich nicht um Scalar-Properties, welche standardisierte Datentypen sind, sondern um Navigation-Properties, welche im Hintergrund von der \gls{jpa} zu Foreign Keys verarbeitet werden, hält.
 
 Es wird also kein tatsächliches Bahnhof Objekt auf der Datenbank gespeichert (da dies nicht möglich ist), sondern nur der Foreign Key zu einem Eintrag in dem Bahnhof Table. (Siehe: Mapping \cite{wiki:mapping})
+
+\subsection{EntityManager}
+
+\subsubsection{Erstellen}
+
+Sobald alle Entities erstellt wurden, kann man die \texttt{EntityManagerFactory} \cite{jdoc:entityManagerFactory} verwenden um eine Verbindung zur Datenbank aufzubauen und den \texttt{EntityManager} \cite{jdoc:entityManager} erstellen, um mit den \gls{jpa} \textit{gemappten} Entities arbeiten.
+
+\begin{code}{java}
+EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("westbahn");
+EntityManager entitymanager = emfactory.createEntityManager();
+// ...
+entitymanager.close();
+emfactory.close();
+\end{code}
+
+\subsubsection{Create}
+
+Entities können erstellt werden, indem das \gls{pojo} mittels \texttt{new} erstellt wird, und dem \texttt{EntityManager} \textit{angehängt} wird:
+
+\begin{code}{java}
+entityManager.getTransaction().begin();
+Bahnhof bahnhof = new Bahnhof();
+bahnhof.setName("Wien Spittelau");
+entitymanager.persist(bahnhof);
+entityManager.getTransaction().commit();
+\end{code}
+
+Mittels \texttt{persist} wird diese Entity dem \texttt{PersistenceContext} hinzugefügt, es besteht jedoch auch die Möglichkeit die Entity mittels \texttt{merge} hinzuzufügen. Allerdings wird bei \texttt{merge} eine neue Entity mit kopierten Werten erstellt, was ein unnötiger Overhead ist.
+
+\subsubsection{Update}
+
+Um bestimmte Werte einer Entity zu ändern, muss dies an einer Entity welche bereits im \texttt{PersistenceContext} registriert ist getan werden.
+
+Falls diese Entity nur lokal existiert, muss diese zuerst mittels ID über den \texttt{EntityManager} gefunden werden.
+
+\begin{code}{java}
+entityManager.getTransaction().begin();
+Bahnhof bahnhof = entityManager.find(Bahnhof.class, 0);
+bahnhof.setName("Wien Heiligenstadt");
+entityManager.flush();
+entityManager.getTransaction().commit();
+\end{code}
+
+\subsubsection{Remove}
+
+Um eine Entity zu entfernen muss sie zuerst gefunden werden (oder bereits im \texttt{PersistenceContext} vorhanden sein) und dann mittels \texttt{remove} entfernt werden:
+
+\begin{code}{java}
+entityManager.getTransaction().begin();
+Bahnhof bahnhof = entityManager.find(Bahnhof.class, 0);
+entityManager.remove(bahnhof);
+entityManager.flush();
+entityManager.getTransaction().commit();
+\end{code}
+

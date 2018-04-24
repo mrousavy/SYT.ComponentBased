@@ -12,19 +12,45 @@ public class Main {
     public static void main(String[] args) {
         // TODO: DAL
         logger.info("Starting EntityManagerFactory..");
-        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("westbahn");
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("westbahn");
+        EntityManager entityManager = factory.createEntityManager();
 
-        EntityManager entitymanager = emfactory.createEntityManager();
-        entitymanager.getTransaction().begin();
+        create(entityManager);
+        update(entityManager);
+        remove(entityManager);
 
+        entityManager.close();
+        factory.close();
+        logger.info("Finished!");
+    }
+
+    private static void create(EntityManager entityManager) {
+        logger.info("Creating Bahnhof Spittelau..");
+        entityManager.getTransaction().begin();
         Bahnhof bahnhof = new Bahnhof();
         bahnhof.setName("Wien Spittelau");
+        entityManager.persist(bahnhof);
+        entityManager.getTransaction().commit();
+        logger.info("Bahnhof Spittelau created!");
+    }
 
-        entitymanager.persist(bahnhof);
-        entitymanager.getTransaction().commit();
+    private static void update(EntityManager entityManager) {
+        logger.info("Updating Bahnhof Spittelau -> Heiligenstadt..");
+        entityManager.getTransaction().begin();
+        Bahnhof bahnhof = entityManager.find(Bahnhof.class, 0);
+        bahnhof.setName("Wien Heiligenstadt");
+        entityManager.flush();
+        entityManager.getTransaction().commit();
+        logger.info("Bahnhof Spittelau updated to Heiligenstadt!");
+    }
 
-        entitymanager.close();
-        emfactory.close();
-        logger.info("Finished!");
+    private static void remove(EntityManager entityManager) {
+        logger.info("Removing Bahnhof Heiligenstadt..");
+        entityManager.getTransaction().begin();
+        Bahnhof bahnhof = entityManager.find(Bahnhof.class, 0);
+        entityManager.remove(bahnhof);
+        entityManager.flush();
+        entityManager.getTransaction().commit();
+        logger.info("Bahnhof Heiligenstadt removed!");
     }
 }
