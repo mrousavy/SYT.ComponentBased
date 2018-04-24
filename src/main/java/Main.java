@@ -8,9 +8,9 @@ import javax.persistence.Persistence;
 
 public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class.getName());
+    private static final long BAHNHOF_ID = 1L;
 
     public static void main(String[] args) {
-        // TODO: DAL
         logger.info("Starting EntityManagerFactory..");
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("westbahn");
         EntityManager entityManager = factory.createEntityManager();
@@ -37,7 +37,7 @@ public class Main {
     private static void update(EntityManager entityManager) {
         logger.info("Updating Bahnhof Spittelau -> Heiligenstadt..");
         entityManager.getTransaction().begin();
-        Bahnhof bahnhof = entityManager.find(Bahnhof.class, 0);
+        Bahnhof bahnhof = entityManager.find(Bahnhof.class, BAHNHOF_ID);
         bahnhof.setName("Wien Heiligenstadt");
         entityManager.flush();
         entityManager.getTransaction().commit();
@@ -47,7 +47,7 @@ public class Main {
     private static void remove(EntityManager entityManager) {
         logger.info("Removing Bahnhof Heiligenstadt..");
         entityManager.getTransaction().begin();
-        Bahnhof bahnhof = entityManager.find(Bahnhof.class, 0);
+        Bahnhof bahnhof = entityManager.find(Bahnhof.class, BAHNHOF_ID);
         entityManager.remove(bahnhof);
         entityManager.flush();
         entityManager.getTransaction().commit();

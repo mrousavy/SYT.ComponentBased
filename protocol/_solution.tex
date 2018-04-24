@@ -373,11 +373,11 @@ Mittels \texttt{persist} wird diese Entity dem \texttt{PersistenceContext} hinzu
 
 Um bestimmte Werte einer Entity zu ändern, muss dies an einer Entity welche bereits im \texttt{PersistenceContext} registriert ist getan werden.
 
-Falls diese Entity nur lokal existiert, muss diese zuerst mittels ID über den \texttt{EntityManager} gefunden werden.
+Falls diese Entity nur lokal existiert, muss diese zuerst mittels ID über den \texttt{EntityManager} gefunden werden. Es ist wichtig, dass die \textbf{ID} beim aufrufen von \texttt{find} der richtige Datentyp von der Entity ist. (\texttt{long} oder \texttt{int})
 
 \begin{code}{java}
 entityManager.getTransaction().begin();
-Bahnhof bahnhof = entityManager.find(Bahnhof.class, 0);
+Bahnhof bahnhof = entityManager.find(Bahnhof.class, 0L);
 bahnhof.setName("Wien Heiligenstadt");
 entityManager.flush();
 entityManager.getTransaction().commit();
@@ -389,9 +389,140 @@ Um eine Entity zu entfernen muss sie zuerst gefunden werden (oder bereits im \te
 
 \begin{code}{java}
 entityManager.getTransaction().begin();
-Bahnhof bahnhof = entityManager.find(Bahnhof.class, 0);
+Bahnhof bahnhof = entityManager.find(Bahnhof.class, 0L);
 entityManager.remove(bahnhof);
 entityManager.flush();
 entityManager.getTransaction().commit();
+\end{code}
+
+\clearpage
+\subsection{Testen}
+
+\subsubsection{Logger}
+
+Dadurch dass wir einen Logger (mittels \textbf{log4j}) erstellt haben, wird \gls{jpa} (bzw. Hibernate) auf den Output des Loggers loggen. Mit der Einstellung in der \texttt{persistence.xml} werden auch erstellte Queries geloggt.
+
+Der Logger wurde folgendermaßen konfiguriert und erstellt:
+
+\begin{code}{properties}
+# Root logger option
+log4j.rootLogger=INFO, console
+
+log4j.logger.com.javarticles=INFO, console
+log4j.logger.com.javarticles.log4j=INFO, console
+log4j.logger.com.javarticles.log4j.info.Log4jInfoExample=INFO, console
+log4j.logger.com.javarticles.log4j.warn.Log4jWarnExample=WARN, console
+
+# Direct log messages to stdout
+log4j.appender.console=org.apache.log4j.ConsoleAppender
+log4j.appender.console.Target=System.out
+log4j.appender.console.layout=org.apache.log4j.PatternLayout
+log4j.appender.console.layout.ConversionPattern=%d{HH:mm}| %p | %F %L | %m%n
+\end{code}
+
+In Java:
+
+\begin{code}{java}
+private static final Logger _logger = LogManager.getLogger(Main.class.getName());
+\end{code}
+
+\subsubsection{Test Programm}
+
+Das Test Programm (\texttt{Main.java}) habe ich geschrieben, um das erstellen, modifizieren und entfernen von einem Bahnhof zu testen.
+
+\begin{code}{java}
+import BusinessObjects.Bahnhof;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+public class Main {
+    private static final Logger logger = LogManager.getLogger(Main.class.getName());
+    private static final long BAHNHOF_ID = 1L;
+
+    public static void main(String[] args) {
+        logger.info("Starting EntityManagerFactory..");
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("westbahn");
+        EntityManager entityManager = factory.createEntityManager();
+
+        create(entityManager);
+        update(entityManager);
+        remove(entityManager);
+
+        entityManager.close();
+        factory.close();
+        logger.info("Finished!");
+    }
+
+    private static void create(EntityManager entityManager) {
+        logger.info("Creating Bahnhof Spittelau..");
+        entityManager.getTransaction().begin();
+        Bahnhof bahnhof = new Bahnhof();
+        bahnhof.setName("Wien Spittelau");
+        entityManager.persist(bahnhof);
+        entityManager.getTransaction().commit();
+        logger.info("Bahnhof Spittelau created!");
+    }
+
+    private static void update(EntityManager entityManager) {
+        logger.info("Updating Bahnhof Spittelau -> Heiligenstadt..");
+        entityManager.getTransaction().begin();
+        Bahnhof bahnhof = entityManager.find(Bahnhof.class, BAHNHOF_ID);
+        bahnhof.setName("Wien Heiligenstadt");
+        entityManager.flush();
+        entityManager.getTransaction().commit();
+        logger.info("Bahnhof Spittelau updated to Heiligenstadt!");
+    }
+
+    private static void remove(EntityManager entityManager) {
+        logger.info("Removing Bahnhof Heiligenstadt..");
+        entityManager.getTransaction().begin();
+        Bahnhof bahnhof = entityManager.find(Bahnhof.class, BAHNHOF_ID);
+        entityManager.remove(bahnhof);
+        entityManager.flush();
+        entityManager.getTransaction().commit();
+        logger.info("Bahnhof Heiligenstadt removed!");
+    }
+}
+\end{code}
+
+Output:
+
+\begin{code}{text}
+13:58| INFO | Main.java 29 | Creating Bahnhof Spittelau..
+Hibernate:
+    insert
+    into
+        Bahnhof
+        (absKmEntfernung, absPreisEntfernung, absZeitEntfernung, kopfBahnhof, name)
+    values
+        (?, ?, ?, ?, ?)
+13:58| INFO | Main.java 35 | Bahnhof Spittelau created!
+13:58| INFO | Main.java 39 | Updating Bahnhof Spittelau -> Heiligenstadt..
+Hibernate:
+    update
+        Bahnhof
+    set
+        absKmEntfernung=?,
+        absPreisEntfernung=?,
+        absZeitEntfernung=?,
+        kopfBahnhof=?,
+        name=?
+    where
+        ID=?
+13:58| INFO | Main.java 45 | Bahnhof Spittelau updated to Heiligenstadt!
+13:58| INFO | Main.java 49 | Removing Bahnhof Heiligenstadt..
+Hibernate:
+    delete
+    from
+        Bahnhof
+    where
+        ID=?
+13:58| INFO | Main.java 55 | Bahnhof Heiligenstadt removed!
+13:58| INFO | DriverManagerConnectionProviderImpl.java 233 | HHH10001008: Cleaning up connection pool [jdbc:mysql://172.17.0.2:3306/westbahn]
+13:58| INFO | Main.java 25 | Finished!
 \end{code}
 
