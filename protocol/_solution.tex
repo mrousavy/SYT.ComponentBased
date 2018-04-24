@@ -192,7 +192,7 @@ Die vollständige \texttt{persistence.xml} Datei wird folgendermaßen definiert:
 
 \subsection{Entities}
 
-Entities sind einfache Klassen, bzw. \gls{pojo}, welche durch die \gls{jpa} auf die Datenbank \textit{gemapped} werden.
+Entities sind einfache Klassen, bzw. \gls{pojo}, welche durch die \gls{jpa} auf die Datenbank \textit{gemapped} \cite{wiki:mapping} werden.
 
 \
 
@@ -214,7 +214,7 @@ Die wichtigste \textbf{Annotations} ist:
 public class Bahnhof {}
 \end{code}
 
-welche auf jedem \textit{gemappten} \gls{pojo} zu finden ist.
+welche auf jedem \textit{gemappten} \cite{wiki:mapping} \gls{pojo} zu finden ist.
 
 \
 
@@ -331,3 +331,7 @@ Dazu gefunden habe ich die Dokumentation in den Java Docs: \gls{uniqueConstraint
         uniqueConstraints = @UniqueConstraint(columnNames = {"start_id", "ende_id"})
 )
 \end{code}
+
+Die Spalten heißen \texttt{start\_id}/\texttt{end\_id}, da es sich nicht um Scalar-Properties, welche standardisierte Datentypen sind, sondern um Navigation-Properties, welche im Hintergrund von der \gls{jpa} zu Foreign Keys verarbeitet werden, hält.
+
+Es wird also kein tatsächliches Bahnhof Objekt auf der Datenbank gespeichert (da dies nicht möglich ist), sondern nur der Foreign Key zu einem Eintrag in dem Bahnhof Table. (Siehe: Mapping \cite{wiki:mapping})
