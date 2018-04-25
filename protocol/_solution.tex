@@ -424,7 +424,7 @@ Falls diese Entity nur lokal existiert, muss diese zuerst mittels ID über den \
 
 \begin{code}{java}
 entityManager.getTransaction().begin();
-Bahnhof bahnhof = entityManager.find(Bahnhof.class, 0L);
+Bahnhof bahnhof = entityManager.find(Bahnhof.class, BAHNHOF_ID);
 bahnhof.setName("Wien Heiligenstadt");
 entityManager.flush();
 entityManager.getTransaction().commit();
@@ -436,7 +436,7 @@ Um eine Entity zu entfernen muss sie zuerst gefunden werden (oder bereits im \te
 
 \begin{code}{java}
 entityManager.getTransaction().begin();
-Bahnhof bahnhof = entityManager.find(Bahnhof.class, 0L);
+Bahnhof bahnhof = entityManager.find(Bahnhof.class, BAHNHOF_ID);
 entityManager.remove(bahnhof);
 entityManager.flush();
 entityManager.getTransaction().commit();

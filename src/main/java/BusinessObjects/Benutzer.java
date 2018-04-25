@@ -7,7 +7,7 @@ import java.util.List;
 @Entity
 @NamedQuery(
         name = "Benutzer.getAllWithMonatskarte",
-        query = "SELECT b FROM Benutzer b INNER JOIN Zeitkarte z ON z.ID=b.tickets.ID WHERE z.typ=1"
+        query = "SELECT b FROM Benutzer b"// INNER JOIN Benutzer_Zeitkarte ON Benutzer_ID=Zeitkarte_ID INNER JOIN Zeitkarte z ON z.ID=b.tickets.ID WHERE z.typ=1"
 )
 public class Benutzer {
 	@Id
