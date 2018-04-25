@@ -456,6 +456,8 @@ entityManager.getTransaction().commit();
 
 \textbf{Liste alle Benutzer auf, die eine Monatskarte besitzen.}
 
+Hierbei war die Schwierigkeit die richtigen \texttt{JOIN}s zu finden, da die \texttt{Benutzer.tickets} Liste in Wirklichkeit von \textbf{Hibernate} aus dem versteckten Table \texttt{Benutzer\_Tickets} verlinkt wird. Also muss irgendwie Zugriff auf die \texttt{Benutzer.tickets} Liste, den \texttt{Benutzer} selbst \textbf{und} den \texttt{Ticket.typ} gewährt werden.
+
 \begin{code}{java}
 @NamedQuery(
     name = "Benutzer.getAllWithMonatskarte",
