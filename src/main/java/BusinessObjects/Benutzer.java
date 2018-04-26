@@ -2,6 +2,7 @@ package BusinessObjects;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,11 +29,11 @@ public class Benutzer {
 
 	private long verbuchtePraemienMeilen;
 
-	@OneToMany
-	private List<Ticket> tickets;
+	@OneToMany(cascade=CascadeType.ALL)
+	private List<Ticket> tickets = new ArrayList<Ticket>();
 
-	@OneToMany
-	private List<Reservierung> reservierungen;
+	@OneToMany(cascade=CascadeType.ALL)
+	private List<Reservierung> reservierungen = new ArrayList<Reservierung>();
 
     public Long getID() {
         return ID;
@@ -98,11 +99,19 @@ public class Benutzer {
         this.tickets = tickets;
     }
 
+    public void addTicket(Ticket ticket) {
+        this.tickets.add(ticket);
+    }
+
     public List<Reservierung> getReservierungen() {
         return reservierungen;
     }
 
     public void setReservierungen(List<Reservierung> reservierungen) {
         this.reservierungen = reservierungen;
+    }
+
+    public void addReservierung(Reservierung reservierung) {
+        this.reservierungen.add(reservierung);
     }
 }

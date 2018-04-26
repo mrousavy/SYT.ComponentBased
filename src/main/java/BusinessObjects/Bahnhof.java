@@ -6,6 +6,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
+@NamedQuery(name = "Bahnhof.getAll", query = "SELECT b FROM Bahnhof b")
 public class Bahnhof {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

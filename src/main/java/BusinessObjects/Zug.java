@@ -26,6 +26,7 @@ public class Zug {
 
     @AssertTrue(message="Start und End Bahnhof können nicht die selben sein!")
     public boolean validBahnhof() {
+        System.out.println("Validating Bahnhof " + start + " and " + ende + "..");
         return !start.equals(ende);
     }
 

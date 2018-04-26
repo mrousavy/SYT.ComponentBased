@@ -2,6 +2,7 @@ package BusinessObjects;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class Sonderangebot {
 
 	private float preisNachlass = 0.5f;
 
-	@OneToMany
-	private List<Ticket> tickets;
+	@OneToMany(cascade=CascadeType.ALL)
+	private List<Ticket> tickets = new ArrayList<Ticket>();
 
     public Long getID() {
         return ID;
