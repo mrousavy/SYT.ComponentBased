@@ -566,7 +566,7 @@ Gelöst habe ich dies mittels den \texttt{@Size} und \texttt{@Pattern} Annotatio
 \begin{code}{java}
 @Column(unique = true)
 @Size(min=2, max=150)
-@Pattern(regexp = "^[a-zA-Z0-9\\-]$")
+@Pattern(regexp = "[a-zA-Z0-9\-\säöüÄÖÜ]+")
 private String name;
 \end{code}
 
