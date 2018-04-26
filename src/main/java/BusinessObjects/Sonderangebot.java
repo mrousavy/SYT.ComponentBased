@@ -21,7 +21,7 @@ public class Sonderangebot {
 
 	private float preisNachlass = 0.5f;
 
-	@OneToMany(cascade=CascadeType.ALL)
+	@ManyToMany(cascade=CascadeType.ALL)
 	private List<Ticket> tickets = new ArrayList<Ticket>();
 
     public Long getID() {
@@ -70,5 +70,9 @@ public class Sonderangebot {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public void addTicket(Ticket ticket) {
+        this.tickets.add(ticket);
     }
 }

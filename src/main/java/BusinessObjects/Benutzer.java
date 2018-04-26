@@ -29,10 +29,10 @@ public class Benutzer {
 
 	private long verbuchtePraemienMeilen;
 
-	@OneToMany(cascade=CascadeType.ALL)
+	@ManyToMany(cascade=CascadeType.ALL)
 	private List<Ticket> tickets = new ArrayList<Ticket>();
 
-	@OneToMany(cascade=CascadeType.ALL)
+	@ManyToMany(cascade=CascadeType.ALL)
 	private List<Reservierung> reservierungen = new ArrayList<Reservierung>();
 
     public Long getID() {

@@ -23,14 +23,14 @@
             <basic name="preis"/>
             <basic name="status"/>
             <one-to-one name="zug">
-                <join-column name="ID"/>
+                <join-column name="zug_id"/>
             </one-to-one>
             <one-to-one name="strecke">
-                <join-column name="ID"/>
+                <join-column name="strecke_id"/>
             </one-to-one>
-            <one-to-one name="benutzer">
-                <join-column name="ID"/>
-            </one-to-one>
+            <many-to-one name="benutzer">
+                <join-column name="benutzer_id"/>
+            </many-to-one>
             <transient name="zahlung"/>
         </attributes>
     </entity>

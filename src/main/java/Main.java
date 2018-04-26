@@ -23,6 +23,7 @@ public class Main {
         createStations(entityManager);
         createStrecken(entityManager);
         createUsers(entityManager);
+        createSonderangebote(entityManager);
         //update(entityManager);
         //remove(entityManager);
 
@@ -94,6 +95,25 @@ public class Main {
             create(entityManager, einzel);
         } catch (Exception ex) {
             logger.error("Failed to create Tickets!", ex);
+        }
+    }
+
+    private static void createSonderangebote(EntityManager entityManager) {
+        try {
+            for (int i = 0; i < 10; i++) {
+                Sonderangebot angebot = new Sonderangebot();
+                angebot.setDauer(random(0, 50));
+                angebot.setKontingent(random(1, 10));
+                angebot.setPreisNachlass((float) random(0, 50));
+                angebot.setStartZeit(randomDate());
+                for (int ii = 0; ii < 3; ii++) {
+                    Ticket rndTicket = entityManager.find(Ticket.class, randomL(1, 5));
+                    angebot.addTicket(rndTicket);
+                }
+                create(entityManager, angebot);
+            }
+        } catch (Exception ex) {
+            logger.error("Failed to create Sonderangebote!", ex);
         }
     }
 
