@@ -3,6 +3,12 @@ package BusinessObjects;
 import javax.persistence.*;
 
 @Entity
+@NamedQuery(
+        name = "Ticket.getAllTicketsWithoutReservierung",
+        query = "SELECT t FROM Ticket t " +
+                "LEFT JOIN Reservierung r ON r.strecke.ID=t.strecke.ID " +
+                "WHERE t.strecke.ID=:streckeID"
+)
 public abstract class Ticket {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

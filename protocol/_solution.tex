@@ -486,11 +486,24 @@ entityManager.getTransaction().commit();
 
 \textbf{Finde alle Reservierungen für einen bestimmten Benutzer, der durch die eMail-Adresse definiert wird.}
 
+Da die Reservierung durch das \texttt{orm.xml} File \textit{gemapped} wurde, muss auch die Named Query so erstellt werden:
+
 \begin{code}{java}
-@NamedQuery(
-    name="Reservierung.getReservierungenForUser",
-    query = "SELECT r FROM Benutzer.reservierungen r INNER JOIN Reservierung ON r.ID=Reservierung.ID WHERE Benutzer.eMail = :email"
-)
+<named-query name="Reservierung.getReservierungenForUser">
+    <query>SELECT r FROM Reservierung r LEFT JOIN r.benutzer b WHERE b.eMail = :email</query>
+</named-query>
+\end{code}
+
+Aufgerufen kann dies folgendermaßen werden:
+
+\begin{code}{java}
+String email = "Marc@gmail.com";
+List<Reservierung> benutzerMitReservierungen = entityManager.createNamedQuery("Reservierung.getReservierungenForUser")
+        .setParameter("email", email)
+        .getResultList();
+for (Reservierung reservierung : benutzerMitReservierungen) {
+    System.out.println("Reservierung für " + email + ": " + reservierung);
+}
 \end{code}
 
 \textbf{Liste alle Benutzer auf, die eine Monatskarte besitzen.}
@@ -500,14 +513,40 @@ Hierbei war die Schwierigkeit die richtigen \texttt{JOIN}s zu finden, da die \te
 \begin{code}{java}
 @NamedQuery(
     name = "Benutzer.getAllWithMonatskarte",
-    query = "SELECT Benutzer FROM Benutzer.tickets t INNER JOIN Zeitkarte ON Zeitkarte.ID=t.ID WHERE Zeitkarte.typ=1"
+    query = "SELECT b FROM Benutzer b LEFT JOIN b.tickets t WHERE t.typ=1"
 )
+\end{code}
+
+Aufgerufen kann dies folgendermaßen werden:
+
+\begin{code}{java}
+List<Benutzer> benutzerMitMonatskarte = entityManager.createNamedQuery("Benutzer.getAllWithMonatskarte").getResultList();
+for (Benutzer benutzer : benutzerMitMonatskarte) {
+    System.out.println("Benutzer mit Monatkarte: " + benutzer);
+}
 \end{code}
 
 \textbf{Liste alle Tickets für eine bestimmte Strecke aus (durch Anfangs- und Endbahnhof definiert), wo keine Reservierungen durchgeführt wurden.}
 
 \begin{code}{java}
-// ...
+@NamedQuery(
+    name = "Ticket.getAllTicketsWithoutReservierung",
+    query = "SELECT t FROM Ticket t " +
+            "LEFT JOIN Reservierung r ON r.strecke.ID=t.strecke.ID " +
+            "WHERE t.strecke.ID=:streckeID"
+)
+\end{code}
+
+Aufgerufen kann dies folgendermaßen werden:
+
+\begin{code}{java}
+long streckeId = 1;
+List<Ticket> ticketsOhneReservierung = entityManager.createNamedQuery("Ticket.getAllTicketsWithoutReservierung")
+        .setParameter("streckeID", streckeId)
+        .getResultList();
+for (Ticket ticket : ticketsOhneReservierung) {
+    System.out.println("Strecke ohne Reservierung für Strecke#" + streckeId + ": " + ticket);
+}
 \end{code}
 
 \clearpage

@@ -34,6 +34,27 @@ public class Main {
         //update(entityManager);
         //remove(entityManager);
 
+        List<Benutzer> benutzerMitMonatskarte = entityManager.createNamedQuery("Benutzer.getAllWithMonatskarte").getResultList();
+        for (Benutzer benutzer : benutzerMitMonatskarte) {
+            System.out.println("Benutzer mit Monatkarte: " + benutzer);
+        }
+
+        String email = "Marc@gmail.com";
+        List<Reservierung> benutzerMitReservierungen = entityManager.createNamedQuery("Reservierung.getReservierungenForUser")
+                .setParameter("email", email)
+                .getResultList();
+        for (Reservierung reservierung : benutzerMitReservierungen) {
+            System.out.println("Reservierung für " + email + ": " + reservierung);
+        }
+
+        long streckeId = 1;
+        List<Ticket> ticketsOhneReservierung = entityManager.createNamedQuery("Ticket.getAllTicketsWithoutReservierung")
+                .setParameter("streckeID", streckeId)
+                .getResultList();
+        for (Ticket ticket : ticketsOhneReservierung) {
+            System.out.println("Strecke ohne Reservierung für Strecke#" + streckeId + ": " + ticket);
+        }
+
         entityManager.close();
         factory.close();
         logger.info("Finished!");

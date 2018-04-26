@@ -11,9 +11,9 @@
 
     <entity class="BusinessObjects.Reservierung" name="Reservierung">
         <table name="Reservierung"/>
-        <!--<named-query name="Reservierung.getReservierungenForUser">
-            <query>SELECT r FROM Benutzer.reservierungen r INNER JOIN Reservierung ON r.ID=Reservierung.ID WHERE Benutzer.eMail = :email</query>
-        </named-query>-->
+        <named-query name="Reservierung.getReservierungenForUser">
+            <query>SELECT r FROM Reservierung r LEFT JOIN r.benutzer b WHERE b.eMail = :email</query>
+        </named-query>
         <attributes>
             <id name="ID">
                 <generated-value strategy="IDENTITY"/>
