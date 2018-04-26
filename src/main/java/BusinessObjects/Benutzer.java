@@ -63,7 +63,7 @@ public class Benutzer {
         return eMail;
     }
 
-    public void seteMail(@Email String eMail) {
+    public void seteMail(String eMail) {
         this.eMail = eMail;
     }
 

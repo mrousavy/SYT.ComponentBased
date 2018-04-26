@@ -14,7 +14,7 @@ public class Bahnhof {
 
 	@Column(unique = true)
     @Size(min=2, max=150)
-    @Pattern(regexp = "^[a-zA-Z0-9\\-]$")
+    @Pattern(regexp = "[a-zA-Z0-9\\-\\söäüÖÄÜ]+")
 	private String name;
 
 	private int absPreisEntfernung;

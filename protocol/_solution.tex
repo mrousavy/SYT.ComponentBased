@@ -35,6 +35,30 @@ Mittels Maven können nun alle Libraries hinzugefügt werden:
             <version>5.2.16.Final</version>
         </dependency>
         \end{code}
+    \item Hibernate Validation:
+        \begin{code}{xml}
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.9.Final</version>
+        </dependency>
+        \end{code}
+    \item Glassfish EL:
+        \begin{code}{xml}
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.1-b09</version>
+        </dependency>
+        \end{code}
+    \item Hibernate Validation CDI:
+        \begin{code}{xml}
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator-cdi</artifactId>
+            <version>6.0.9.Final</version>
+        </dependency>
+        \end{code}
     \item log4j:
         \begin{code}{xml}
         <dependency>
@@ -74,7 +98,22 @@ Das \textbf{Maven} \gls{pom} sieht dementsprechend folgendermaßen aus:
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.2.16.Final</version>
+            <version>5.2.17.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.9.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.1-b09</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator-cdi</artifactId>
+            <version>6.0.9.Final</version>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
@@ -477,6 +516,8 @@ Hierbei war die Schwierigkeit die richtigen \texttt{JOIN}s zu finden, da die \te
 Es soll die \textbf{Bean Validation API} verwendet werden, um bestimmte Attribute einzugrenzen.
 
 Als Referenz habe ich den Bean Validation Cheat Sheet von owasp \cite{owasp:beanValidationCheatSheet} verwendet.
+
+Die \textbf{Bean Validation API} ist, so wie die \gls{jpa}, eine abstrakte API, als Implementierung muss deshalb die \textbf{Hibernate Validation API} gewählt werden.
 
 \subsubsection{Unique}
 \textbf{Zug und Strecke können nicht denselben Start- und Endbahnhof besitzen.}

@@ -5,6 +5,9 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,6 +20,10 @@ public class Main {
 
     public static void main(String[] args) {
         logger.info("Starting EntityManagerFactory..");
+
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        Validator validator = validatorFactory.getValidator();
+
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("westbahn");
         EntityManager entityManager = factory.createEntityManager();
 
@@ -39,10 +46,11 @@ public class Main {
             create(entityManager, spittelau);
             BAHNHOF_ID = spittelau.getID();
 
-            String[] names = new String[]{"Wien Westbhf", "Wien Hütteldorf", "St. Pölten", "Amstetten", "Linz", "Wels", "Attnang-Puchheim", "Salzburg"};
+            String[] names = new String[]{"Wien Westbhf", "Wien Hütteldorf", "St Pölten", "Amstetten", "Linz", "Wels", "Attnang-Puchheim", "Salzburg"};
             for (String name : names) {
                 Bahnhof bahnhof = new Bahnhof();
                 bahnhof.setName(name);
+                System.out.println(name);
                 bahnhof.setAbsKmEntfernung(random(0, 1000));
                 bahnhof.setAbsPreisEntfernung(random(0, 1000));
                 bahnhof.setAbsZeitEntfernung(random(0, 1000));
